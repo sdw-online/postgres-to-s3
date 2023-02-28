@@ -1,0 +1,200 @@
+[
+    {
+        "created_at": 1677512749989,
+        "dwh_layer": "RAW",
+        "flight_id": "0fda01d0-6c30-43bc-ac4d-15cbdaa0a00b",
+        "load_timestamp": 1677512749989,
+        "source_file": "ticket_prices.json",
+        "source_system": "3rd party apps",
+        "ticket_price": 594.0,
+        "ticket_price_date": 1654819200000,
+        "updated_at": 1677512749989
+    },
+    {
+        "created_at": 1677512749989,
+        "dwh_layer": "RAW",
+        "flight_id": "febaa69e-1536-41f0-aec2-7344c1804ec1",
+        "load_timestamp": 1677512749989,
+        "source_file": "ticket_prices.json",
+        "source_system": "Mobile App",
+        "ticket_price": 505.0,
+        "ticket_price_date": 1585526400000,
+        "updated_at": 1677512749989
+    },
+    {
+        "created_at": 1677512749989,
+        "dwh_layer": "RAW",
+        "flight_id": "99327bfb-0404-4fdc-9669-052829014ba6",
+        "load_timestamp": 1677512749989,
+        "source_file": "ticket_prices.json",
+        "source_system": "3rd party apps",
+        "ticket_price": 234.0,
+        "ticket_price_date": 1655683200000,
+        "updated_at": 1677512749989
+    },
+    {
+        "created_at": 1677512749989,
+        "dwh_layer": "RAW",
+        "flight_id": "004fe923-f432-4e5f-866c-e35b3f75e695",
+        "load_timestamp": 1677512749989,
+        "source_file": "ticket_prices.json",
+        "source_system": "3rd party apps",
+        "ticket_price": 88.0,
+        "ticket_price_date": 1598572800000,
+        "updated_at": 1677512749989
+    },
+    {
+        "created_at": 1677512749989,
+        "dwh_layer": "RAW",
+        "flight_id": "9731aa51-123e-4676-89df-b5fd82c333fa",
+        "load_timestamp": 1677512749989,
+        "source_file": "ticket_prices.json",
+        "source_system": "Website",
+        "ticket_price": 63.0,
+        "ticket_price_date": 1672272000000,
+        "updated_at": 1677512749989
+    },
+    {
+        "created_at": 1677512749989,
+        "dwh_layer": "RAW",
+        "flight_id": "f5dd5d47-6a47-4b1b-8a81-93d949ab2376",
+        "load_timestamp": 1677512749989,
+        "source_file": "ticket_prices.json",
+        "source_system": "3rd party apps",
+        "ticket_price": 655.0,
+        "ticket_price_date": 1596844800000,
+        "updated_at": 1677512749989
+    },
+    {
+        "created_at": 1677512749989,
+        "dwh_layer": "RAW",
+        "flight_id": "18e2849b-6fb0-4323-93de-1c260b25e797",
+        "load_timestamp": 1677512749989,
+        "source_file": "ticket_prices.json",
+        "source_system": "ERP",
+        "ticket_price": 143.0,
+        "ticket_price_date": 1658275200000,
+        "updated_at": 1677512749989
+    },
+    {
+        "created_at": 1677512749989,
+        "dwh_layer": "RAW",
+        "flight_id": "d6e28cfb-bb3b-464f-811e-28b7c2669357",
+        "load_timestamp": 1677512749989,
+        "source_file": "ticket_prices.json",
+        "source_system": "ERP",
+        "ticket_price": 356.0,
+        "ticket_price_date": 1674086400000,
+        "updated_at": 1677512749989
+    },
+    {
+        "created_at": 1677512749989,
+        "dwh_layer": "RAW",
+        "flight_id": "65146499-7699-4e17-845b-d2ccc4d98e01",
+        "load_timestamp": 1677512749989,
+        "source_file": "ticket_prices.json",
+        "source_system": "ERP",
+        "ticket_price": 681.0,
+        "ticket_price_date": 1621814400000,
+        "updated_at": 1677512749989
+    },
+    {
+        "created_at": 1677512749989,
+        "dwh_layer": "RAW",
+        "flight_id": "85bc6fef-8f49-4b8c-82c4-503419ab3877",
+        "load_timestamp": 1677512749989,
+        "source_file": "ticket_prices.json",
+        "source_system": "Mobile App",
+        "ticket_price": 94.0,
+        "ticket_price_date": 1625270400000,
+        "updated_at": 1677512749989
+    },
+    {
+        "created_at": 1677512749989,
+        "dwh_layer": "RAW",
+        "flight_id": "974c42f1-c7fd-46dd-8632-f4fd9f2699a3",
+        "load_timestamp": 1677512749989,
+        "source_file": "ticket_prices.json",
+        "source_system": "Mobile App",
+        "ticket_price": 120.0,
+        "ticket_price_date": 1620259200000,
+        "updated_at": 1677512749989
+    },
+    {
+        "created_at": 1677512749989,
+        "dwh_layer": "RAW",
+        "flight_id": "7dc414ec-0c44-416c-89d6-61373bd73ae8",
+        "load_timestamp": 1677512749989,
+        "source_file": "ticket_prices.json",
+        "source_system": "3rd party apps",
+        "ticket_price": 124.0,
+        "ticket_price_date": 1617148800000,
+        "updated_at": 1677512749989
+    },
+    {
+        "created_at": 1677512749989,
+        "dwh_layer": "RAW",
+        "flight_id": "8d9d4a38-38f6-43cc-b037-c76b919c1ad3",
+        "load_timestamp": 1677512749989,
+        "source_file": "ticket_prices.json",
+        "source_system": "Website",
+        "ticket_price": 477.0,
+        "ticket_price_date": 1617062400000,
+        "updated_at": 1677512749989
+    },
+    {
+        "created_at": 1677512749989,
+        "dwh_layer": "RAW",
+        "flight_id": "07e910fe-246f-4546-b68c-665735f19fb3",
+        "load_timestamp": 1677512749989,
+        "source_file": "ticket_prices.json",
+        "source_system": "Website",
+        "ticket_price": 180.0,
+        "ticket_price_date": 1603670400000,
+        "updated_at": 1677512749989
+    },
+    {
+        "created_at": 1677512749989,
+        "dwh_layer": "RAW",
+        "flight_id": "3fb2f838-c009-446f-9902-88cef4953bf4",
+        "load_timestamp": 1677512749989,
+        "source_file": "ticket_prices.json",
+        "source_system": "Company database",
+        "ticket_price": 66.0,
+        "ticket_price_date": 1595635200000,
+        "updated_at": 1677512749989
+    },
+    {
+        "created_at": 1677512749989,
+        "dwh_layer": "RAW",
+        "flight_id": "f6b5dfdb-8c0c-4828-bf71-72b781007643",
+        "load_timestamp": 1677512749989,
+        "source_file": "ticket_prices.json",
+        "source_system": "CRM",
+        "ticket_price": 232.0,
+        "ticket_price_date": 1645228800000,
+        "updated_at": 1677512749989
+    },
+    {
+        "created_at": 1677512749989,
+        "dwh_layer": "RAW",
+        "flight_id": "305eda17-eecd-437e-8417-45e3bfe88003",
+        "load_timestamp": 1677512749989,
+        "source_file": "ticket_prices.json",
+        "source_system": "CRM",
+        "ticket_price": 404.0,
+        "ticket_price_date": 1618704000000,
+        "updated_at": 1677512749989
+    },
+    {
+        "created_at": 1677512749989,
+        "dwh_layer": "RAW",
+        "flight_id": "ef69bb37-ba7b-47da-98bc-f913fcc8cc78",
+        "load_timestamp": 1677512749989,
+        "source_file": "ticket_prices.json",
+        "source_system": "ERP",
+        "ticket_price": 184.0,
+        "ticket_price_date": 1614988800000,
+        "updated_at": 1677512749989
+    }
+]

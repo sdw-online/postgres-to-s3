@@ -69,6 +69,10 @@ load_dotenv()
 
 # Set up connection to AWS 
 
+ACCESS_KEY              =   os.getenv("ACCESS_KEY")
+SECRET_ACCESS_KEY       =   os.getenv("SECRET_ACCESS_KEY")
+REGION_NAME             =   os.getenv("REGION_NAME")
+S3_BUCKET               =   os.getenv("S3_BUCKET")
 
 
 # Set up connection to Postgres database 
@@ -96,7 +100,13 @@ get_raw_tables_from_postgres_dwh_sql                         =      f'''SELECT t
                                                                         ;   '''
 sql_query_2                         =      f'''SELECT * FROM {schema_name}.{table_2} ;   '''
 sql_query_3                         =      f'''SELECT * FROM {schema_name}.{table_3} ;   '''
-        
+
+
+# path    =   os.path.abspath('postgres-to-s3/migration-pipelines/data/L1_raw_layer')
+# print(path)
+raw_json_filepath = os.getenv("DATA_LOCATION")
+# print(raw_json_filepath)        
+
 postgres_connection = psycopg2.connect(
                 host        =   host,
                 port        =   port,
@@ -107,7 +117,7 @@ postgres_connection = psycopg2.connect(
 postgres_connection.set_session(autocommit=True)
 
 
-def extract_postgres_data(postgres_connection):
+def extract_raw_data_from_postgres(postgres_connection):
     try:
         
         # Validate the Postgres database connection
@@ -130,8 +140,6 @@ def extract_postgres_data(postgres_connection):
 
         # Get tables 
 
-        
-        # Begin the data extraction process
         root_logger.info("")
         root_logger.info("---------------------------------------------")
         root_logger.info("Now extracting data from the Postgres data warehouse raw layer...")
@@ -144,20 +152,21 @@ def extract_postgres_data(postgres_connection):
             cursor.execute(f'SELECT * FROM {schema_name}.{raw_table[0]} ')
             sql_results = cursor.fetchall()
             df = pd.DataFrame(data=sql_results, columns=[desc[0] for desc in cursor.description])
-            root_logger.debug(f'Raw table name: {raw_table}')
+            root_logger.debug(f'Raw table name: {raw_table[0]}')
             root_logger.debug(df.head(3))
             root_logger.info(f'')
 
-
-
+            with open(f'{raw_json_filepath}/{raw_table[0]}.json', 'w') as raw_json_file:
+                raw_df_to_json = df.to_json(orient="records")
+                raw_json_file.write(json.dumps(json.loads(raw_df_to_json), indent=4, sort_keys=True)) 
 
 
         root_logger.info("")
         root_logger.info("---------------------------------------------")
         root_logger.info("Successfully extracted the data from the Postgres data warehouse raw layer . Now advancing to the next stage... ")
-        
+
     except psycopg2.Error as e:
-        print(e)
+        root_logger.error(f'ERROR IN EXTRACTING DATA: {str(e)} ')
 
 
     finally:
@@ -176,4 +185,22 @@ def extract_postgres_data(postgres_connection):
 
 
 
-extract_postgres_data(postgres_connection)
+
+
+def load_raw_data_from_postgres_to_s3():
+    try:
+        records_imported_to_s3 = 0
+        root_logger.info(f'Import ')
+        raw_filepath  = ''
+
+        s3 = boto3.client('s3', aws_access_key_id=ACCESS_KEY, aws_secret_access_key=SECRET_ACCESS_KEY, region_name=REGION_NAME)
+        s3.upload_file(filename, S3_BUCKET, filename)
+
+
+    except Exception as e:
+        root_logger.error(f'ERROR IN LOADING DATA: {str(e)} ')
+
+
+
+
+extract_raw_data_from_postgres(postgres_connection)
