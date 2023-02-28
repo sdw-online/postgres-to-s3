@@ -35,7 +35,7 @@ console_handler_log_formatter   =   coloredlogs.ColoredFormatter(fmt    =   '%(m
 
 # Set up file handler object for logging events to file
 current_filepath    =   Path(__file__).stem
-file_handler        =   logging.FileHandler('logs/L4_dwh_layer/user_access_layer/' + current_filepath + '.log', mode='w')
+file_handler        =   logging.FileHandler('logs/config/' + current_filepath + '.log', mode='w')
 file_handler.setFormatter(file_handler_log_formatter)
 
 
@@ -75,33 +75,40 @@ load_dotenv()
 host                    =   os.getenv("HOST")
 port                    =   os.getenv('PORT')
 database                =   os.getenv('RAW_DB')
-username                =   os.getenv('USERNAME')
+username                =   os.getenv('PG_USERNAME')
 password                =   os.getenv('PASSWORD')
 
 postgres_connection     =   None
 cursor                  =   None
 
 sql_alchemy_engine                  =       create_engine(f'postgresql://{username}:{password}@{host}:{port}/{database}')
-
-
-print("SUCCESS!!!")
-
+active_schema_name                  =      'reporting'
+active_db_name                      =       database
+table_1                             =       ''
+table_2                             =       ''
+table_3                             =       ''
+sql_query_1                         =      f'''SELECT * FROM {active_schema_name}.{table_1} ;   '''
+sql_query_2                         =      f'''SELECT * FROM {active_schema_name}.{table_2} ;   '''
+sql_query_3                         =      f'''SELECT * FROM {active_schema_name}.{table_3} ;   '''
+        
 
 try:
 
-
     engine = create_engine(f'{sql_alchemy_engine}')
      
-        # Validate the Postgres database connection
-        if postgres_connection.closed == 0:
-            root_logger.debug(f"")
-            root_logger.info("=================================================================================")
-            root_logger.info(f"CONNECTION SUCCESS: Managed to connect successfully to the {active_db_name} database!!")
-            root_logger.info(f"Connection details: {postgres_connection.dsn} ")
-            root_logger.info("=================================================================================")
-            root_logger.debug("")
-        
-        elif postgres_connection.closed != 0:
-            raise ConnectionError("CONNECTION ERROR: Unable to connect to the demo_company database...") 
+    # Validate the Postgres database connection
+    if postgres_connection.closed == 0:
+        root_logger.debug(f"")
+        root_logger.info("=================================================================================")
+        root_logger.info(f"CONNECTION SUCCESS: Managed to connect successfully to the '{active_db_name}' database!!")
+        root_logger.info(f"Connection details: '{postgres_connection.dsn}' ")
+        root_logger.info("=================================================================================")
+        root_logger.debug("")
+    
+    elif postgres_connection.closed != 0:
+        raise ConnectionError(f"CONNECTION ERROR: Unable to connect to the '{active_db_name}' database...") 
+    
+
+
 except psycopg2.Error as e:
     print(e)
