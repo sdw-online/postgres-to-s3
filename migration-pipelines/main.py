@@ -125,7 +125,7 @@ try:
     cursor      =   postgres_connection.cursor()
 
 
-
+ 
     # Get tables 
     cursor.execute(get_raw_tables_from_postgres_dwh_sql)
     raw_tables = cursor.fetchall()
