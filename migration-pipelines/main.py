@@ -69,6 +69,10 @@ load_dotenv()
 
 # Set up connection to AWS 
 
+ACCESS_KEY              =   os.getenv("ACCESS_KEY")
+SECRET_ACCESS_KEY       =   os.getenv("SECRET_ACCESS_KEY")
+REGION_NAME             =   os.getenv("REGION_NAME")
+S3_BUCKET               =   os.getenv("S3_BUCKET")
 
 
 # Set up connection to Postgres database 
@@ -90,13 +94,26 @@ table_2                             =       ''
 table_3                             =       ''
 
 
+# raw_json_filepath = os.getenv("DATA_LOCATION")
+
+
+
+# Set up SQL statements 
 get_raw_tables_from_postgres_dwh_sql                         =      f'''SELECT table_name FROM information_schema.tables
                                                                         WHERE table_type = 'BASE TABLE'
                                                                         AND table_schema = '{schema_name}'
-                                                                        ;   '''
+                                                                        ;   
+'''
+
+count_total_no_of_postgres_raw_tables = f'''        SELECT table_name FROM information_schema.tables 
+                                                        WHERE table_type = 'BASE TABLE' AND table_schema = '{schema_name}';
+'''
+
 sql_query_2                         =      f'''SELECT * FROM {schema_name}.{table_2} ;   '''
 sql_query_3                         =      f'''SELECT * FROM {schema_name}.{table_3} ;   '''
-        
+
+
+
 postgres_connection = psycopg2.connect(
                 host        =   host,
                 port        =   port,
@@ -107,7 +124,9 @@ postgres_connection = psycopg2.connect(
 postgres_connection.set_session(autocommit=True)
 
 
-def extract_postgres_data(postgres_connection):
+
+
+def load_raw_data_from_postgres_to_s3(postgres_connection):
     try:
         
         # Validate the Postgres database connection
@@ -130,34 +149,54 @@ def extract_postgres_data(postgres_connection):
 
         # Get tables 
 
-        
-        # Begin the data extraction process
         root_logger.info("")
         root_logger.info("---------------------------------------------")
         root_logger.info("Now extracting data from the Postgres data warehouse raw layer...")
 
         cursor.execute(get_raw_tables_from_postgres_dwh_sql)
         raw_tables = cursor.fetchall()
+        tables_imported_to_s3 = 0
 
 
         for raw_table in raw_tables:
+            
             cursor.execute(f'SELECT * FROM {schema_name}.{raw_table[0]} ')
             sql_results = cursor.fetchall()
+            tables_imported_to_s3 += 1
             df = pd.DataFrame(data=sql_results, columns=[desc[0] for desc in cursor.description])
-            root_logger.debug(f'Raw table name: {raw_table}')
+            root_logger.debug(f'Raw table name: {raw_table[0]}')
             root_logger.debug(df.head(3))
             root_logger.info(f'')
 
+            root_logger.info(f"Importing '{raw_table[0]}' table to S3 bucket as JSON file...  ") 
 
+            # Set up constants for S3 file to be imported
+            raw_sub_folder = 'raw_folder/'
+            S3_KEY = raw_sub_folder + f'{raw_table[0]}.json'
+            raw_df_to_json = df.to_json(orient="records")
+            RAW_DATA_JSON_BODY = json.dumps(json.loads(raw_df_to_json), indent=4, sort_keys=True)
+            s3 = boto3.client('s3', aws_access_key_id=ACCESS_KEY, aws_secret_access_key=SECRET_ACCESS_KEY, region_name=REGION_NAME)
+
+
+            # Load Postgres table to S3
+            s3.put_object(Bucket=S3_BUCKET,
+                          Key=S3_KEY,
+                          Body=RAW_DATA_JSON_BODY
+                          )
+            root_logger.info(f"Successfully loaded {S3_KEY} file to the '{S3_BUCKET}' S3 bucket... ")
+            root_logger.info("")
+            root_logger.info(f"     --- {tables_imported_to_s3}/{len(raw_tables)} raw tables in S3... ")
+            root_logger.info("")
+            root_logger.info("---------------------------------------------")
 
 
 
         root_logger.info("")
         root_logger.info("---------------------------------------------")
         root_logger.info("Successfully extracted the data from the Postgres data warehouse raw layer . Now advancing to the next stage... ")
-        
+
     except psycopg2.Error as e:
-        print(e)
+        root_logger.error(f'ERROR IN EXTRACTING OR LOADING DATA: {str(e)} ')
 
 
     finally:
@@ -176,4 +215,88 @@ def extract_postgres_data(postgres_connection):
 
 
 
-extract_postgres_data(postgres_connection)
+def perform_import_validation_checks(postgres_connection):
+    
+    try:
+            
+        # Validate the Postgres database connection
+        if postgres_connection.closed == 0:
+            root_logger.debug(f"")
+            root_logger.info("=================================================================================")
+            root_logger.info(f"CONNECTION SUCCESS: Managed to connect successfully to the '{db_name}' database!!")
+            root_logger.info(f"Connection details: '{postgres_connection.dsn}' ")
+            root_logger.info("=================================================================================")
+            root_logger.debug("")
+        
+        elif postgres_connection.closed != 0:
+            raise ConnectionError(f"CONNECTION ERROR: Unable to connect to the '{db_name}' database...") 
+        
+
+        # Create a cursor object to execute the PG-SQL commands 
+        cursor      =   postgres_connection.cursor()
+
+
+
+        # Check total number of rows and columns in Postgres tables for raw layer
+
+        root_logger.info("")
+        root_logger.info("---------------------------------------------")
+        root_logger.info("Preparing row & column count job on raw tables in Postgres data warehouse ...")
+        root_logger.debug("")
+        root_logger.debug("")
+        root_logger.info(f'')
+        root_logger.info(f'')
+        root_logger.info('================================================')
+        root_logger.info('           DATA PROFILING METRICS: POSTGRES             ')
+        root_logger.info('================================================')
+        root_logger.info(f'')
+        root_logger.info(f'Now calculating Postgres raw tables statistics...')
+        root_logger.info(f'')
+        root_logger.info(f'')
+
+
+
+
+        cursor.execute(count_total_no_of_postgres_raw_tables)
+        raw_tables = cursor.fetchall()
+
+        for raw_table in raw_tables:
+            check_total_row_count_before_insert_statement   =   f'''   SELECT COUNT(*) FROM {schema_name}.{raw_table[0]} ;
+            '''
+            cursor.execute(check_total_row_count_before_insert_statement)
+            sql_result = cursor.fetchone()[0]
+            # root_logger.info("")
+            root_logger.info(f'Postgres table name:         {raw_table[0]} ')
+            root_logger.info(f'Total rows in Postgres:      {sql_result} ')
+            root_logger.info("")
+            root_logger.info("---------------------------------------------")
+            root_logger.info("")
+
+
+
+        # Check total number of rows and columns in Amazon Athena tables for raw layer
+
+    except psycopg2.Error as e:
+        root_logger.error(f'ERROR IN PERFORMING VALIDATION CHECKS: {str(e)} ')
+
+
+    finally:
+        
+        # Close the cursor if it exists 
+        if cursor is not None:
+            cursor.close()
+            root_logger.debug("")
+            root_logger.debug("Cursor closed successfully.")
+
+        # Close the database connection to Postgres if it exists 
+        if postgres_connection is not None:
+            postgres_connection.close()
+            # root_logger.debug("")
+            root_logger.debug("Session connected to Postgres database closed.")
+
+
+
+# load_raw_data_from_postgres_to_s3(postgres_connection)
+
+
+perform_import_validation_checks(postgres_connection)
