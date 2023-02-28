@@ -1,0 +1,9 @@
+name: postgres-to-s3
+channels: 
+- conda-forge
+dependencies:
+- python=3.10
+- boto3
+- pandas
+- psycopg2
+- configparser
