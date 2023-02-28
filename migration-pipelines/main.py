@@ -6,7 +6,8 @@ import pandas as pd
 import io
 import psycopg2
 import logging, coloredlogs
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, text
+from sqlalchemy.orm import sessionmaker, scoped_session
 from pathlib import Path
 
 # ================================================ LOGGER ================================================
@@ -82,33 +83,59 @@ postgres_connection     =   None
 cursor                  =   None
 
 sql_alchemy_engine                  =       create_engine(f'postgresql://{username}:{password}@{host}:{port}/{database}')
-active_schema_name                  =      'reporting'
-active_db_name                      =       database
+schema_name                         =      'main'
+db_name                             =       database
 table_1                             =       ''
 table_2                             =       ''
 table_3                             =       ''
-sql_query_1                         =      f'''SELECT * FROM {active_schema_name}.{table_1} ;   '''
-sql_query_2                         =      f'''SELECT * FROM {active_schema_name}.{table_2} ;   '''
-sql_query_3                         =      f'''SELECT * FROM {active_schema_name}.{table_3} ;   '''
+
+
+get_raw_tables_from_postgres_dwh_sql                         =      text(f'''SELECT table_name FROM information_schema.tables
+                                                                        WHERE table_type = 'BASE TABLE'
+                                                                        AND table_schema = '{schema_name}'
+                                                                        ;   ''')
+sql_query_2                         =      f'''SELECT * FROM {schema_name}.{table_2} ;   '''
+sql_query_3                         =      f'''SELECT * FROM {schema_name}.{table_3} ;   '''
         
+postgres_connection = psycopg2.connect(
+                host        =   host,
+                port        =   port,
+                dbname      =   database,
+                user        =   username,
+                password    =   password,
+        )
+postgres_connection.set_session(autocommit=True)
 
 try:
-
-    engine = create_engine(f'{sql_alchemy_engine}')
      
     # Validate the Postgres database connection
     if postgres_connection.closed == 0:
         root_logger.debug(f"")
         root_logger.info("=================================================================================")
-        root_logger.info(f"CONNECTION SUCCESS: Managed to connect successfully to the '{active_db_name}' database!!")
+        root_logger.info(f"CONNECTION SUCCESS: Managed to connect successfully to the '{db_name}' database!!")
         root_logger.info(f"Connection details: '{postgres_connection.dsn}' ")
         root_logger.info("=================================================================================")
         root_logger.debug("")
     
     elif postgres_connection.closed != 0:
-        raise ConnectionError(f"CONNECTION ERROR: Unable to connect to the '{active_db_name}' database...") 
+        raise ConnectionError(f"CONNECTION ERROR: Unable to connect to the '{db_name}' database...") 
     
 
+    # Create a cursor object to execute the PG-SQL commands 
+    cursor      =   postgres_connection.cursor()
+
+
+
+    # Get tables 
+    Session = scoped_session(sessionmaker(bind=sql_alchemy_engine))
+    s = Session()
+    raw_tables = s.execute(get_raw_tables_from_postgres_dwh_sql)
+
+
+    for raw_table in raw_tables:
+        df = pd.read_sql(text(f'SELECT * FROM {raw_table};'), con=sql_alchemy_engine)
+        root_logger.debug(df.head(3))
+        root_logger.info(f'')
 
 except psycopg2.Error as e:
     print(e)

@@ -1,0 +1,6 @@
+2023-02-28 18:13:24,088  |  DEBUG  |    
+2023-02-28 18:13:24,089  |  INFO  |  =================================================================================  
+2023-02-28 18:13:24,089  |  INFO  |  CONNECTION SUCCESS: Managed to connect successfully to the 'raw_db' database!!  
+2023-02-28 18:13:24,089  |  INFO  |  Connection details: 'user=postgres password=xxx dbname=raw_db host=localhost port=5434'   
+2023-02-28 18:13:24,090  |  INFO  |  =================================================================================  
+2023-02-28 18:13:24,090  |  DEBUG  |    
