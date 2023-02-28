@@ -106,38 +106,74 @@ postgres_connection = psycopg2.connect(
         )
 postgres_connection.set_session(autocommit=True)
 
-try:
-     
-    # Validate the Postgres database connection
-    if postgres_connection.closed == 0:
-        root_logger.debug(f"")
-        root_logger.info("=================================================================================")
-        root_logger.info(f"CONNECTION SUCCESS: Managed to connect successfully to the '{db_name}' database!!")
-        root_logger.info(f"Connection details: '{postgres_connection.dsn}' ")
-        root_logger.info("=================================================================================")
-        root_logger.debug("")
-    
-    elif postgres_connection.closed != 0:
-        raise ConnectionError(f"CONNECTION ERROR: Unable to connect to the '{db_name}' database...") 
-    
 
-    # Create a cursor object to execute the PG-SQL commands 
-    cursor      =   postgres_connection.cursor()
+def extract_postgres_data(postgres_connection):
+    try:
+        
+        # Validate the Postgres database connection
+        if postgres_connection.closed == 0:
+            root_logger.debug(f"")
+            root_logger.info("=================================================================================")
+            root_logger.info(f"CONNECTION SUCCESS: Managed to connect successfully to the '{db_name}' database!!")
+            root_logger.info(f"Connection details: '{postgres_connection.dsn}' ")
+            root_logger.info("=================================================================================")
+            root_logger.debug("")
+        
+        elif postgres_connection.closed != 0:
+            raise ConnectionError(f"CONNECTION ERROR: Unable to connect to the '{db_name}' database...") 
+        
 
-
- 
-    # Get tables 
-    cursor.execute(get_raw_tables_from_postgres_dwh_sql)
-    raw_tables = cursor.fetchall()
+        # Create a cursor object to execute the PG-SQL commands 
+        cursor      =   postgres_connection.cursor()
 
 
-    for raw_table in raw_tables:
-        cursor.execute(f'SELECT * FROM {schema_name}.{raw_table[0]} ')
-        sql_results = cursor.fetchall()
-        df = pd.DataFrame(sql_results, columns=[desc[0] for desc in cursor.description])
-        root_logger.debug(f'Raw table name: {raw_table}')
-        root_logger.debug(df.head(3))
-        root_logger.info(f'')
 
-except psycopg2.Error as e:
-    print(e)
+        # Get tables 
+
+        
+        # Begin the data extraction process
+        root_logger.info("")
+        root_logger.info("---------------------------------------------")
+        root_logger.info("Now extracting data from the Postgres data warehouse raw layer...")
+
+        cursor.execute(get_raw_tables_from_postgres_dwh_sql)
+        raw_tables = cursor.fetchall()
+
+
+        for raw_table in raw_tables:
+            cursor.execute(f'SELECT * FROM {schema_name}.{raw_table[0]} ')
+            sql_results = cursor.fetchall()
+            df = pd.DataFrame(data=sql_results, columns=[desc[0] for desc in cursor.description])
+            root_logger.debug(f'Raw table name: {raw_table}')
+            root_logger.debug(df.head(3))
+            root_logger.info(f'')
+
+
+
+
+
+        root_logger.info("")
+        root_logger.info("---------------------------------------------")
+        root_logger.info("Successfully extracted the data from the Postgres data warehouse raw layer . Now advancing to the next stage... ")
+        
+    except psycopg2.Error as e:
+        print(e)
+
+
+    finally:
+        
+        # Close the cursor if it exists 
+        if cursor is not None:
+            cursor.close()
+            root_logger.debug("")
+            root_logger.debug("Cursor closed successfully.")
+
+        # Close the database connection to Postgres if it exists 
+        if postgres_connection is not None:
+            postgres_connection.close()
+            # root_logger.debug("")
+            root_logger.debug("Session connected to Postgres database closed.")
+
+
+
+extract_postgres_data(postgres_connection)
