@@ -90,10 +90,10 @@ table_2                             =       ''
 table_3                             =       ''
 
 
-get_raw_tables_from_postgres_dwh_sql                         =      text(f'''SELECT table_name FROM information_schema.tables
+get_raw_tables_from_postgres_dwh_sql                         =      f'''SELECT table_name FROM information_schema.tables
                                                                         WHERE table_type = 'BASE TABLE'
                                                                         AND table_schema = '{schema_name}'
-                                                                        ;   ''')
+                                                                        ;   '''
 sql_query_2                         =      f'''SELECT * FROM {schema_name}.{table_2} ;   '''
 sql_query_3                         =      f'''SELECT * FROM {schema_name}.{table_3} ;   '''
         
@@ -127,13 +127,15 @@ try:
 
 
     # Get tables 
-    Session = scoped_session(sessionmaker(bind=sql_alchemy_engine))
-    s = Session()
-    raw_tables = s.execute(get_raw_tables_from_postgres_dwh_sql)
+    cursor.execute(get_raw_tables_from_postgres_dwh_sql)
+    raw_tables = cursor.fetchall()
 
 
     for raw_table in raw_tables:
-        df = pd.read_sql(text(f'SELECT * FROM {raw_table};'), con=sql_alchemy_engine)
+        cursor.execute(f'SELECT * FROM {schema_name}.{raw_table[0]} ')
+        sql_results = cursor.fetchall()
+        df = pd.DataFrame(sql_results, columns=[desc[0] for desc in cursor.description])
+        root_logger.debug(f'Raw table name: {raw_table}')
         root_logger.debug(df.head(3))
         root_logger.info(f'')
 

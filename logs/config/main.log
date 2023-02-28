@@ -1,6 +1,80 @@
-2023-02-28 18:13:24,088  |  DEBUG  |    
-2023-02-28 18:13:24,089  |  INFO  |  =================================================================================  
-2023-02-28 18:13:24,089  |  INFO  |  CONNECTION SUCCESS: Managed to connect successfully to the 'raw_db' database!!  
-2023-02-28 18:13:24,089  |  INFO  |  Connection details: 'user=postgres password=xxx dbname=raw_db host=localhost port=5434'   
-2023-02-28 18:13:24,090  |  INFO  |  =================================================================================  
-2023-02-28 18:13:24,090  |  DEBUG  |    
+2023-02-28 18:20:20,200  |  DEBUG  |    
+2023-02-28 18:20:20,200  |  INFO  |  =================================================================================  
+2023-02-28 18:20:20,200  |  INFO  |  CONNECTION SUCCESS: Managed to connect successfully to the 'raw_db' database!!  
+2023-02-28 18:20:20,201  |  INFO  |  Connection details: 'user=postgres password=xxx dbname=raw_db host=localhost port=5434'   
+2023-02-28 18:20:20,201  |  INFO  |  =================================================================================  
+2023-02-28 18:20:20,201  |  DEBUG  |    
+2023-02-28 18:20:20,217  |  DEBUG  |  Raw table name: ('raw_flight_destinations_tbl',)  
+2023-02-28 18:20:20,217  |  DEBUG  |                                flight_id arrival_city departure_city                       created_at                       updated_at   source_system               source_file             load_timestamp dwh_layer
+0  65146499-7699-4e17-845b-d2ccc4d98e01    Serengeti      Serengeti 2023-02-27 15:45:16.315252+00:00 2023-02-27 15:45:16.315252+00:00      Mobile App  flight_destinations.json 2023-02-27 15:45:16.315252       RAW
+1  de0d64b4-72bc-4e4f-b14b-054ff57d8eab         Maui          Dubai 2023-02-27 15:45:16.315252+00:00 2023-02-27 15:45:16.315252+00:00  3rd party apps  flight_destinations.json 2023-02-27 15:45:16.315252       RAW
+2  f2380880-b841-48f0-be78-2a1d1e22b84f         Rome         London 2023-02-27 15:45:16.315252+00:00 2023-02-27 15:45:16.315252+00:00             CRM  flight_destinations.json 2023-02-27 15:45:16.315252       RAW  
+2023-02-28 18:20:20,241  |  INFO  |    
+2023-02-28 18:20:20,246  |  DEBUG  |  Raw table name: ('raw_ticket_prices_tbl',)  
+2023-02-28 18:20:20,247  |  DEBUG  |                                flight_id ticket_price  ticket_price_date                       created_at                       updated_at   source_system         source_file             load_timestamp dwh_layer
+0  0fda01d0-6c30-43bc-ac4d-15cbdaa0a00b   594.000000      1654819200000 2023-02-27 15:45:49.989802+00:00 2023-02-27 15:45:49.989802+00:00  3rd party apps  ticket_prices.json 2023-02-27 15:45:49.989802       RAW
+1  febaa69e-1536-41f0-aec2-7344c1804ec1   505.000000      1585526400000 2023-02-27 15:45:49.989802+00:00 2023-02-27 15:45:49.989802+00:00      Mobile App  ticket_prices.json 2023-02-27 15:45:49.989802       RAW
+2  99327bfb-0404-4fdc-9669-052829014ba6   234.000000      1655683200000 2023-02-27 15:45:49.989802+00:00 2023-02-27 15:45:49.989802+00:00  3rd party apps  ticket_prices.json 2023-02-27 15:45:49.989802       RAW  
+2023-02-28 18:20:20,272  |  INFO  |    
+2023-02-28 18:20:20,314  |  DEBUG  |  Raw table name: ('raw_flight_promotion_deals_tbl',)  
+2023-02-28 18:20:20,315  |  DEBUG  |                             promotion_id                     flight_booking_id              promotion_name applied_discount  ... source_system                  source_file             load_timestamp dwh_layer
+0  80129db7-6c44-417d-87c2-d74cd18739f2  6bf3c3a6-6890-48f6-9e5c-8f2d3de05757  Adventure Travel Discounts            50.00  ...           CRM  flight_promotion_deals.json 2023-02-27 15:45:18.432110       RAW
+1  d3ffda8f-a5f0-4868-82ba-d705f27e0552  9854d9e9-31aa-4f9c-888e-a48afc7d33cc   Romantic Getaway Packages             5.00  ...           ERP  flight_promotion_deals.json 2023-02-27 15:45:18.432110       RAW
+2  a09bc3de-1e22-450e-8854-531e34fcbaa0  8263169f-30f1-4647-8c01-64a2669e90d1       Fall for Travel Deals            27.00  ...       Website  flight_promotion_deals.json 2023-02-27 15:45:18.432110       RAW
+
+[3 rows x 10 columns]  
+2023-02-28 18:20:20,339  |  INFO  |    
+2023-02-28 18:20:20,390  |  DEBUG  |  Raw table name: ('raw_accommodation_bookings_tbl',)  
+2023-02-28 18:20:20,392  |  DEBUG  |                                       id   booking_date  check_in_date  check_out_date checked_in  ...                       updated_at     source_system                  source_file             load_timestamp  dwh_layer
+0  a2e6811c-b619-4f7f-b800-d5dbad7e4821  1421107200000  1452729600000   1453939200000         No  ... 2023-02-27 15:43:56.680775+00:00               ERP  accommodation_bookings.json 2023-02-27 15:43:56.680775        RAW
+1  4bbdabf6-7a5b-4d32-8547-98d70b6e75f9  1417996800000  1452729600000   1453075200000        Yes  ... 2023-02-27 15:43:56.680775+00:00  Company database  accommodation_bookings.json 2023-02-27 15:43:56.680775        RAW
+2  2ecf15aa-b02a-40d0-b062-c9aa69c7ef81  1435276800000  1452729600000   1453939200000        Yes  ... 2023-02-27 15:43:56.680775+00:00           Website  accommodation_bookings.json 2023-02-27 15:43:56.680775        RAW
+
+[3 rows x 22 columns]  
+2023-02-28 18:20:20,430  |  INFO  |    
+2023-02-28 18:20:20,440  |  DEBUG  |  Raw table name: ('raw_flight_schedules_tbl',)  
+2023-02-28 18:20:20,441  |  DEBUG  |                                flight_id    flight_date departure_city departure_time arrival_city arrival_time                       created_at                       updated_at     source_system            source_file             load_timestamp dwh_layer
+0  d54837bd-894e-4d16-813d-5b34da122100  1653609600000      Santorini       08:13:33         Bali     17:06:09 2023-02-27 15:45:43.685419+00:00 2023-02-27 15:45:43.685419+00:00           Website  flight_schedules.json 2023-02-27 15:45:43.685419       RAW
+1  96059a2a-04a4-42e6-9ae4-f8d3d628a3ff  1639440000000      Bora Bora       14:53:28         Bali     03:25:31 2023-02-27 15:45:43.685419+00:00 2023-02-27 15:45:43.685419+00:00  Company database  flight_schedules.json 2023-02-27 15:45:43.685419       RAW
+2  f0101dd5-112c-4eb9-ab0c-70c5c1032c5a  1607904000000           Rome       13:53:00    Santorini     12:41:39 2023-02-27 15:45:43.685419+00:00 2023-02-27 15:45:43.685419+00:00        Mobile App  flight_schedules.json 2023-02-27 15:45:43.685419       RAW  
+2023-02-28 18:20:20,465  |  INFO  |    
+2023-02-28 18:20:20,472  |  DEBUG  |  Raw table name: ('raw_customer_feedbacks_tbl',)  
+2023-02-28 18:20:20,472  |  DEBUG  |                              feedback_id                           customer_id                     flight_booking_id  feedback_date  ...     source_system              source_file             load_timestamp dwh_layer
+0  b245ba6b-ca65-4c87-884b-a6ae59ccea58  ce5608eb-f044-4df1-8775-e4c0323e2c3b  2ebddd87-31a1-42b7-961a-5cdc6cdb075f  1645315200000  ...  Company database  customer_feedbacks.json 2023-02-27 15:44:19.931058       RAW
+1  3a3f518d-2f0a-4d06-884d-705594c7bc27  68d945fa-0569-4026-ab59-f2827b44d90a  ed396ceb-0098-4442-833d-9ed28f99bed2  1647993600000  ...               ERP  customer_feedbacks.json 2023-02-27 15:44:19.931058       RAW
+2  72c724ee-4974-4ab1-a6fa-9a1d3c7b5431  7b8395ca-1d88-4f46-9e73-ab83c5cdf516  b044adee-7860-4490-95f2-f4f309ab0b76  1619568000000  ...        Mobile App  customer_feedbacks.json 2023-02-27 15:44:19.931058       RAW
+
+[3 rows x 11 columns]  
+2023-02-28 18:20:20,496  |  INFO  |    
+2023-02-28 18:20:20,505  |  DEBUG  |  Raw table name: ('raw_flight_ticket_sales_tbl',)  
+2023-02-28 18:20:20,505  |  DEBUG  |                        flight_booking_id agent_first_name                              agent_id agent_last_name customer_first_name  ...                       updated_at     source_system               source_file             load_timestamp dwh_layer
+0  de4c318c-0451-4436-a56d-e3d90f30f1b6          Matthew  988d3698-0e67-4a3a-9b68-2251cb01406d          Little               Lucas  ... 2023-02-27 15:45:45.744187+00:00               CRM  flight_ticket_sales.json 2023-02-27 15:45:45.744187       RAW
+1  2afb1dbd-2ae6-49ed-a8b8-d708722a99de           Alison  5b1bf495-83bd-43bd-af84-d0c3f70333db            Moss               Donna  ... 2023-02-27 15:45:45.744187+00:00               ERP  flight_ticket_sales.json 2023-02-27 15:45:45.744187       RAW
+2  1ec98bf0-036f-44eb-b3af-4148db6cc3de           Brandi  62a83a51-db31-40a7-8990-27502baa7494         Walters               Jesse  ... 2023-02-27 15:45:45.744187+00:00  Company database  flight_ticket_sales.json 2023-02-27 15:45:45.744187       RAW
+
+[3 rows x 18 columns]  
+2023-02-28 18:20:20,541  |  INFO  |    
+2023-02-28 18:20:20,558  |  DEBUG  |  Raw table name: ('raw_customer_info_tbl',)  
+2023-02-28 18:20:20,559  |  DEBUG  |                              customer_id                                           address        age          city   created_date  ...                       updated_at source_system         source_file             load_timestamp  dwh_layer
+0  8293b392-8783-4bf6-8d78-e2c20c00aa78  5517 Hicks Highway Apt. 551\nJamesview, AL 72228  31.654420    Dudleytown  1586563200000  ... 2023-02-27 15:44:21.772480+00:00       Website  customer_info.json 2023-02-27 15:44:21.772480        RAW
+1  237d0686-e1e0-4587-b6b1-5336868f9cfd      429 Brian Junction\nPort Janetbury, LA 23054   1.337930   Austinville  1586563200000  ... 2023-02-27 15:44:21.772480+00:00    Mobile App  customer_info.json 2023-02-27 15:44:21.772480        RAW
+2  2e55ce71-73e5-41f8-9217-185a2c9b5fbc            2314 Victoria Mill\nWhiteton, WV 14066  20.748685  New Sarahton  1586563200000  ... 2023-02-27 15:44:21.772480+00:00       Website  customer_info.json 2023-02-27 15:44:21.772480        RAW
+
+[3 rows x 25 columns]  
+2023-02-28 18:20:20,604  |  INFO  |    
+2023-02-28 18:20:20,696  |  DEBUG  |  Raw table name: ('raw_flight_bookings_tbl',)  
+2023-02-28 18:20:20,697  |  DEBUG  |    confirmation_code   booking_date checked_in                           customer_id                     flight_booking_id  ...                       updated_at     source_system           source_file             load_timestamp dwh_layer
+0        DO3YLGDXZS  1572652800000        Yes  722d7571-a058-4e7a-9c9e-e4f38d26bb24  9dc8e3f1-7ce5-4aa6-a058-16a101d4b394  ... 2023-02-27 15:44:27.591779+00:00               ERP  flight_bookings.json 2023-02-27 15:44:27.591779       RAW
+1        SSUGWQ1Q5D  1332892800000         No  60e6d8f4-b385-4a65-b011-99132a00cd46  b55c5662-11e4-4431-8128-90faa381b706  ... 2023-02-27 15:44:27.591779+00:00           Website  flight_bookings.json 2023-02-27 15:44:27.591779       RAW
+2        6U8DMRJ9JN  1610409600000         No  a7489116-ecaa-4cf2-ab49-8fe068d39f4b  2202b7a3-98db-43fe-8a57-207bc6982843  ... 2023-02-27 15:44:27.591779+00:00  Company database  flight_bookings.json 2023-02-27 15:44:27.591779       RAW
+
+[3 rows x 14 columns]  
+2023-02-28 18:20:20,731  |  INFO  |    
+2023-02-28 18:20:20,747  |  DEBUG  |  Raw table name: ('raw_sales_agents_tbl',)  
+2023-02-28 18:20:20,747  |  DEBUG  |                                       id first_name last_name                         email               phone  ...                       updated_at     source_system        source_file             load_timestamp dwh_layer
+0  9782de91-3ef3-4cf3-ba2d-4ef370ef473c      Cathy     Casey         cathy.casey@gmail.com  (386)774-7192x0093  ... 2023-02-27 15:45:47.864380+00:00  Company database  sales_agents.json 2023-02-27 15:45:47.864380       RAW
+1  83bed7b6-51d6-4868-9275-760341336f8d      Robin   Barrera         robin.barrera@msn.com        341.199.6907  ... 2023-02-27 15:45:47.864380+00:00               CRM  sales_agents.json 2023-02-27 15:45:47.864380       RAW
+2  ea056114-d498-446f-a714-8f49fca652a8    Kathryn    Acosta  kathryn.acosta@microsoft.com  732.420.4047x27816  ... 2023-02-27 15:45:47.864380+00:00               ERP  sales_agents.json 2023-02-27 15:45:47.864380       RAW
+
+[3 rows x 17 columns]  
+2023-02-28 18:20:20,780  |  INFO  |    
