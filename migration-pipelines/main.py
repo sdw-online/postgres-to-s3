@@ -102,10 +102,7 @@ sql_query_2                         =      f'''SELECT * FROM {schema_name}.{tabl
 sql_query_3                         =      f'''SELECT * FROM {schema_name}.{table_3} ;   '''
 
 
-# path    =   os.path.abspath('postgres-to-s3/migration-pipelines/data/L1_raw_layer')
-# print(path)
 raw_json_filepath = os.getenv("DATA_LOCATION")
-# print(raw_json_filepath)        
 
 postgres_connection = psycopg2.connect(
                 host        =   host,
@@ -191,7 +188,8 @@ def load_raw_data_from_postgres_to_s3():
     try:
         records_imported_to_s3 = 0
         root_logger.info(f'Import ')
-        raw_filepath  = ''
+        raw_filepath  = raw_json_filepath
+
 
         s3 = boto3.client('s3', aws_access_key_id=ACCESS_KEY, aws_secret_access_key=SECRET_ACCESS_KEY, region_name=REGION_NAME)
         s3.upload_file(filename, S3_BUCKET, filename)
