@@ -114,7 +114,7 @@ postgres_connection = psycopg2.connect(
 postgres_connection.set_session(autocommit=True)
 
 
-def extract_raw_data_from_postgres(postgres_connection):
+def load_raw_data_from_postgres_to_s3(postgres_connection):
     try:
         
         # Validate the Postgres database connection
@@ -154,16 +154,20 @@ def extract_raw_data_from_postgres(postgres_connection):
             root_logger.debug(df.head(3))
             root_logger.info(f'')
 
+            root_logger.info(f"Importing '{raw_table[0]}' table to S3 bucket as JSON file...  ") 
 
-            root_logger.info(f'Import ')
-            raw_filepath  = raw_json_filepath
 
             s3_key = f'{raw_table[0]}.json'
+            raw_df_to_json = df.to_json(orient="records")
+            raw_df_to_json_body = json.dumps(json.loads(raw_df_to_json), indent=4, sort_keys=True)
+
             s3 = boto3.client('s3', aws_access_key_id=ACCESS_KEY, aws_secret_access_key=SECRET_ACCESS_KEY, region_name=REGION_NAME)
-            s3.upload_fileobj(df.to_json(orient="records"), S3_BUCKET, s3_key)
+
+            s3.put_object(Bucket=S3_BUCKET,
+                          Key=s3_key,
+                          Body=raw_df_to_json_body
+                          )
             root_logger.info(f"Successfully loaded {s3_key} file to the '{S3_BUCKET}' S3 bucket ... ")
-
-
 
 
 
@@ -172,7 +176,7 @@ def extract_raw_data_from_postgres(postgres_connection):
         root_logger.info("Successfully extracted the data from the Postgres data warehouse raw layer . Now advancing to the next stage... ")
 
     except psycopg2.Error as e:
-        root_logger.error(f'ERROR IN EXTRACTING DATA: {str(e)} ')
+        root_logger.error(f'ERROR IN EXTRACTING OR LOADING DATA: {str(e)} ')
 
 
     finally:
@@ -191,23 +195,4 @@ def extract_raw_data_from_postgres(postgres_connection):
 
 
 
-
-
-def load_raw_data_from_postgres_to_s3():
-    try:
-        records_imported_to_s3 = 0
-        root_logger.info(f'Import ')
-        raw_filepath  = raw_json_filepath
-
-
-        s3 = boto3.client('s3', aws_access_key_id=ACCESS_KEY, aws_secret_access_key=SECRET_ACCESS_KEY, region_name=REGION_NAME)
-        s3.upload_file(filename, S3_BUCKET, filename)
-
-
-    except Exception as e:
-        root_logger.error(f'ERROR IN LOADING DATA: {str(e)} ')
-
-
-
-
-extract_raw_data_from_postgres(postgres_connection)
+load_raw_data_from_postgres_to_s3(postgres_connection)
