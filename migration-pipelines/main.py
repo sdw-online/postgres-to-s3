@@ -143,6 +143,7 @@ def extract_raw_data_from_postgres(postgres_connection):
 
         cursor.execute(get_raw_tables_from_postgres_dwh_sql)
         raw_tables = cursor.fetchall()
+        tables_imported_to_s3 = 0
 
 
         for raw_table in raw_tables:
@@ -153,9 +154,17 @@ def extract_raw_data_from_postgres(postgres_connection):
             root_logger.debug(df.head(3))
             root_logger.info(f'')
 
-            with open(f'{raw_json_filepath}/{raw_table[0]}.json', 'w') as raw_json_file:
-                raw_df_to_json = df.to_json(orient="records")
-                raw_json_file.write(json.dumps(json.loads(raw_df_to_json), indent=4, sort_keys=True)) 
+
+            root_logger.info(f'Import ')
+            raw_filepath  = raw_json_filepath
+
+            s3_key = f'{raw_table[0]}.json'
+            s3 = boto3.client('s3', aws_access_key_id=ACCESS_KEY, aws_secret_access_key=SECRET_ACCESS_KEY, region_name=REGION_NAME)
+            s3.upload_fileobj(df.to_json(orient="records"), S3_BUCKET, s3_key)
+            root_logger.info(f"Successfully loaded {s3_key} file to the '{S3_BUCKET}' S3 bucket ... ")
+
+
+
 
 
         root_logger.info("")
