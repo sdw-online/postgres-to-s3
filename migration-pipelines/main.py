@@ -109,6 +109,7 @@ count_total_no_of_postgres_raw_tables = f'''        SELECT table_name FROM infor
                                                         WHERE table_type = 'BASE TABLE' AND table_schema = '{schema_name}';
 '''
 
+
 sql_query_2                         =      f'''SELECT * FROM {schema_name}.{table_2} ;   '''
 sql_query_3                         =      f'''SELECT * FROM {schema_name}.{table_3} ;   '''
 
@@ -261,13 +262,28 @@ def perform_import_validation_checks(postgres_connection):
         raw_tables = cursor.fetchall()
 
         for raw_table in raw_tables:
-            check_total_row_count_before_insert_statement   =   f'''   SELECT COUNT(*) FROM {schema_name}.{raw_table[0]} ;
+            count_total_no_of_rows_in_postgres_table   =   f'''   SELECT COUNT(*) FROM {schema_name}.{raw_table[0]} ;
             '''
-            cursor.execute(check_total_row_count_before_insert_statement)
-            sql_result = cursor.fetchone()[0]
+            count_total_no_of_columns_in_postgres_table  =   f'''            SELECT          COUNT(column_name) 
+                                                                FROM            information_schema.columns 
+                                                                WHERE           table_name      =   '{raw_table[0]}'
+                                                                AND             table_schema    =   '{schema_name}'
+            '''
+
+
+
+            cursor.execute(count_total_no_of_rows_in_postgres_table)
+            sql_result_for_row_count = cursor.fetchone()[0]
+
+            cursor.execute(count_total_no_of_columns_in_postgres_table)
+            sql_result_for_column_count = cursor.fetchone()[0]
+
+
+
             # root_logger.info("")
-            root_logger.info(f'Postgres table name:         {raw_table[0]} ')
-            root_logger.info(f'Total rows in Postgres:      {sql_result} ')
+            root_logger.info(f'Postgres table name:                         {raw_table[0]} ')
+            root_logger.info(f'Number of rows in Postgres table:            {sql_result_for_row_count} ')
+            root_logger.info(f'Number of columns in Postgres table:         {sql_result_for_column_count} ')
             root_logger.info("")
             root_logger.info("---------------------------------------------")
             root_logger.info("")
@@ -275,6 +291,15 @@ def perform_import_validation_checks(postgres_connection):
 
 
         # Check total number of rows and columns in Amazon Athena tables for raw layer
+
+
+        athena_client = ''
+
+
+
+
+
+
 
     except psycopg2.Error as e:
         root_logger.error(f'ERROR IN PERFORMING VALIDATION CHECKS: {str(e)} ')

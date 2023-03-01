@@ -1,73 +1,83 @@
-2023-02-28 21:10:53,855  |  DEBUG  |    
-2023-02-28 21:10:53,856  |  INFO  |  =================================================================================  
-2023-02-28 21:10:53,856  |  INFO  |  CONNECTION SUCCESS: Managed to connect successfully to the 'raw_db' database!!  
-2023-02-28 21:10:53,856  |  INFO  |  Connection details: 'user=postgres password=xxx dbname=raw_db host=localhost port=5434'   
-2023-02-28 21:10:53,857  |  INFO  |  =================================================================================  
-2023-02-28 21:10:53,857  |  DEBUG  |    
-2023-02-28 21:10:53,857  |  INFO  |    
-2023-02-28 21:10:53,858  |  INFO  |  ---------------------------------------------  
-2023-02-28 21:10:53,858  |  INFO  |  Now performing row & column count on raw tables in Postgres data warehouse ...  
-2023-02-28 21:10:53,858  |  DEBUG  |    
-2023-02-28 21:10:53,858  |  DEBUG  |    
-2023-02-28 21:10:53,859  |  INFO  |    
-2023-02-28 21:10:53,859  |  INFO  |    
-2023-02-28 21:10:53,859  |  INFO  |  ================================================  
-2023-02-28 21:10:53,859  |  INFO  |             DATA PROFILING METRICS: POSTGRES               
-2023-02-28 21:10:53,859  |  INFO  |  ================================================  
-2023-02-28 21:10:53,859  |  INFO  |    
-2023-02-28 21:10:53,860  |  INFO  |  Now calculating table statistics...  
-2023-02-28 21:10:53,860  |  INFO  |    
-2023-02-28 21:10:53,860  |  INFO  |    
-2023-02-28 21:10:53,879  |  INFO  |  Postgres table name:         raw_flight_destinations_tbl   
-2023-02-28 21:10:53,880  |  INFO  |  Total rows in Postgres:      194   
-2023-02-28 21:10:53,880  |  INFO  |    
-2023-02-28 21:10:53,880  |  INFO  |  ---------------------------------------------  
-2023-02-28 21:10:53,881  |  INFO  |    
-2023-02-28 21:10:53,884  |  INFO  |  Postgres table name:         raw_ticket_prices_tbl   
-2023-02-28 21:10:53,884  |  INFO  |  Total rows in Postgres:      18   
-2023-02-28 21:10:53,884  |  INFO  |    
-2023-02-28 21:10:53,884  |  INFO  |  ---------------------------------------------  
-2023-02-28 21:10:53,885  |  INFO  |    
-2023-02-28 21:10:53,891  |  INFO  |  Postgres table name:         raw_flight_promotion_deals_tbl   
-2023-02-28 21:10:53,892  |  INFO  |  Total rows in Postgres:      4534   
-2023-02-28 21:10:53,892  |  INFO  |    
-2023-02-28 21:10:53,892  |  INFO  |  ---------------------------------------------  
-2023-02-28 21:10:53,892  |  INFO  |    
-2023-02-28 21:10:53,897  |  INFO  |  Postgres table name:         raw_accommodation_bookings_tbl   
-2023-02-28 21:10:53,897  |  INFO  |  Total rows in Postgres:      4000   
-2023-02-28 21:10:53,898  |  INFO  |    
-2023-02-28 21:10:53,898  |  INFO  |  ---------------------------------------------  
-2023-02-28 21:10:53,899  |  INFO  |    
-2023-02-28 21:10:53,906  |  INFO  |  Postgres table name:         raw_flight_schedules_tbl   
-2023-02-28 21:10:53,906  |  INFO  |  Total rows in Postgres:      300   
-2023-02-28 21:10:53,908  |  INFO  |    
-2023-02-28 21:10:53,908  |  INFO  |  ---------------------------------------------  
-2023-02-28 21:10:53,909  |  INFO  |    
-2023-02-28 21:10:53,912  |  INFO  |  Postgres table name:         raw_customer_feedbacks_tbl   
-2023-02-28 21:10:53,912  |  INFO  |  Total rows in Postgres:      200   
-2023-02-28 21:10:53,912  |  INFO  |    
-2023-02-28 21:10:53,914  |  INFO  |  ---------------------------------------------  
-2023-02-28 21:10:53,914  |  INFO  |    
-2023-02-28 21:10:53,916  |  INFO  |  Postgres table name:         raw_flight_ticket_sales_tbl   
-2023-02-28 21:10:53,918  |  INFO  |  Total rows in Postgres:      300   
-2023-02-28 21:10:53,918  |  INFO  |    
-2023-02-28 21:10:53,919  |  INFO  |  ---------------------------------------------  
-2023-02-28 21:10:53,919  |  INFO  |    
-2023-02-28 21:10:53,922  |  INFO  |  Postgres table name:         raw_customer_info_tbl   
-2023-02-28 21:10:53,922  |  INFO  |  Total rows in Postgres:      1000   
-2023-02-28 21:10:53,923  |  INFO  |    
-2023-02-28 21:10:53,924  |  INFO  |  ---------------------------------------------  
-2023-02-28 21:10:53,924  |  INFO  |    
-2023-02-28 21:10:53,932  |  INFO  |  Postgres table name:         raw_flight_bookings_tbl   
-2023-02-28 21:10:53,932  |  INFO  |  Total rows in Postgres:      10000   
-2023-02-28 21:10:53,932  |  INFO  |    
-2023-02-28 21:10:53,932  |  INFO  |  ---------------------------------------------  
-2023-02-28 21:10:53,933  |  INFO  |    
-2023-02-28 21:10:53,936  |  INFO  |  Postgres table name:         raw_sales_agents_tbl   
-2023-02-28 21:10:53,936  |  INFO  |  Total rows in Postgres:      300   
-2023-02-28 21:10:53,937  |  INFO  |    
-2023-02-28 21:10:53,937  |  INFO  |  ---------------------------------------------  
-2023-02-28 21:10:53,938  |  INFO  |    
-2023-02-28 21:10:53,938  |  DEBUG  |    
-2023-02-28 21:10:53,938  |  DEBUG  |  Cursor closed successfully.  
-2023-02-28 21:10:53,940  |  DEBUG  |  Session connected to Postgres database closed.  
+2023-03-01 11:00:05,354  |  DEBUG  |    
+2023-03-01 11:00:05,355  |  INFO  |  =================================================================================  
+2023-03-01 11:00:05,356  |  INFO  |  CONNECTION SUCCESS: Managed to connect successfully to the 'raw_db' database!!  
+2023-03-01 11:00:05,356  |  INFO  |  Connection details: 'user=postgres password=xxx dbname=raw_db host=localhost port=5434'   
+2023-03-01 11:00:05,356  |  INFO  |  =================================================================================  
+2023-03-01 11:00:05,357  |  DEBUG  |    
+2023-03-01 11:00:05,357  |  INFO  |    
+2023-03-01 11:00:05,357  |  INFO  |  ---------------------------------------------  
+2023-03-01 11:00:05,357  |  INFO  |  Preparing row & column count job on raw tables in Postgres data warehouse ...  
+2023-03-01 11:00:05,357  |  DEBUG  |    
+2023-03-01 11:00:05,358  |  DEBUG  |    
+2023-03-01 11:00:05,358  |  INFO  |    
+2023-03-01 11:00:05,358  |  INFO  |    
+2023-03-01 11:00:05,358  |  INFO  |  ================================================  
+2023-03-01 11:00:05,358  |  INFO  |             DATA PROFILING METRICS: POSTGRES               
+2023-03-01 11:00:05,359  |  INFO  |  ================================================  
+2023-03-01 11:00:05,359  |  INFO  |    
+2023-03-01 11:00:05,359  |  INFO  |  Now calculating Postgres raw tables statistics...  
+2023-03-01 11:00:05,359  |  INFO  |    
+2023-03-01 11:00:05,359  |  INFO  |    
+2023-03-01 11:00:05,468  |  INFO  |  Postgres table name:                         raw_flight_destinations_tbl   
+2023-03-01 11:00:05,468  |  INFO  |  Number of rows in Postgres table:            194   
+2023-03-01 11:00:05,469  |  INFO  |  Number of columns in Postgres table:         9   
+2023-03-01 11:00:05,469  |  INFO  |    
+2023-03-01 11:00:05,469  |  INFO  |  ---------------------------------------------  
+2023-03-01 11:00:05,469  |  INFO  |    
+2023-03-01 11:00:05,476  |  INFO  |  Postgres table name:                         raw_ticket_prices_tbl   
+2023-03-01 11:00:05,477  |  INFO  |  Number of rows in Postgres table:            18   
+2023-03-01 11:00:05,477  |  INFO  |  Number of columns in Postgres table:         9   
+2023-03-01 11:00:05,477  |  INFO  |    
+2023-03-01 11:00:05,477  |  INFO  |  ---------------------------------------------  
+2023-03-01 11:00:05,478  |  INFO  |    
+2023-03-01 11:00:05,491  |  INFO  |  Postgres table name:                         raw_flight_promotion_deals_tbl   
+2023-03-01 11:00:05,491  |  INFO  |  Number of rows in Postgres table:            4534   
+2023-03-01 11:00:05,492  |  INFO  |  Number of columns in Postgres table:         10   
+2023-03-01 11:00:05,492  |  INFO  |    
+2023-03-01 11:00:05,493  |  INFO  |  ---------------------------------------------  
+2023-03-01 11:00:05,493  |  INFO  |    
+2023-03-01 11:00:05,506  |  INFO  |  Postgres table name:                         raw_accommodation_bookings_tbl   
+2023-03-01 11:00:05,507  |  INFO  |  Number of rows in Postgres table:            4000   
+2023-03-01 11:00:05,508  |  INFO  |  Number of columns in Postgres table:         22   
+2023-03-01 11:00:05,508  |  INFO  |    
+2023-03-01 11:00:05,509  |  INFO  |  ---------------------------------------------  
+2023-03-01 11:00:05,510  |  INFO  |    
+2023-03-01 11:00:05,516  |  INFO  |  Postgres table name:                         raw_flight_schedules_tbl   
+2023-03-01 11:00:05,517  |  INFO  |  Number of rows in Postgres table:            300   
+2023-03-01 11:00:05,517  |  INFO  |  Number of columns in Postgres table:         12   
+2023-03-01 11:00:05,519  |  INFO  |    
+2023-03-01 11:00:05,519  |  INFO  |  ---------------------------------------------  
+2023-03-01 11:00:05,520  |  INFO  |    
+2023-03-01 11:00:05,526  |  INFO  |  Postgres table name:                         raw_customer_feedbacks_tbl   
+2023-03-01 11:00:05,527  |  INFO  |  Number of rows in Postgres table:            200   
+2023-03-01 11:00:05,528  |  INFO  |  Number of columns in Postgres table:         11   
+2023-03-01 11:00:05,528  |  INFO  |    
+2023-03-01 11:00:05,528  |  INFO  |  ---------------------------------------------  
+2023-03-01 11:00:05,530  |  INFO  |    
+2023-03-01 11:00:05,538  |  INFO  |  Postgres table name:                         raw_flight_ticket_sales_tbl   
+2023-03-01 11:00:05,539  |  INFO  |  Number of rows in Postgres table:            300   
+2023-03-01 11:00:05,539  |  INFO  |  Number of columns in Postgres table:         18   
+2023-03-01 11:00:05,540  |  INFO  |    
+2023-03-01 11:00:05,540  |  INFO  |  ---------------------------------------------  
+2023-03-01 11:00:05,540  |  INFO  |    
+2023-03-01 11:00:05,553  |  INFO  |  Postgres table name:                         raw_customer_info_tbl   
+2023-03-01 11:00:05,554  |  INFO  |  Number of rows in Postgres table:            1000   
+2023-03-01 11:00:05,554  |  INFO  |  Number of columns in Postgres table:         25   
+2023-03-01 11:00:05,555  |  INFO  |    
+2023-03-01 11:00:05,556  |  INFO  |  ---------------------------------------------  
+2023-03-01 11:00:05,556  |  INFO  |    
+2023-03-01 11:00:05,577  |  INFO  |  Postgres table name:                         raw_flight_bookings_tbl   
+2023-03-01 11:00:05,577  |  INFO  |  Number of rows in Postgres table:            10000   
+2023-03-01 11:00:05,579  |  INFO  |  Number of columns in Postgres table:         14   
+2023-03-01 11:00:05,579  |  INFO  |    
+2023-03-01 11:00:05,580  |  INFO  |  ---------------------------------------------  
+2023-03-01 11:00:05,580  |  INFO  |    
+2023-03-01 11:00:05,587  |  INFO  |  Postgres table name:                         raw_sales_agents_tbl   
+2023-03-01 11:00:05,589  |  INFO  |  Number of rows in Postgres table:            300   
+2023-03-01 11:00:05,589  |  INFO  |  Number of columns in Postgres table:         17   
+2023-03-01 11:00:05,590  |  INFO  |    
+2023-03-01 11:00:05,590  |  INFO  |  ---------------------------------------------  
+2023-03-01 11:00:05,591  |  INFO  |    
+2023-03-01 11:00:05,591  |  DEBUG  |    
+2023-03-01 11:00:05,592  |  DEBUG  |  Cursor closed successfully.  
+2023-03-01 11:00:05,592  |  DEBUG  |  Session connected to Postgres database closed.  
