@@ -1,14 +1,14 @@
-import boto3
-from dotenv import load_dotenv
-import os 
-import json
-import pandas as pd
 import io
+import os 
+import boto3
 import psycopg2
-import logging, coloredlogs
-from sqlalchemy import create_engine, text
-from sqlalchemy.orm import sessionmaker, scoped_session
+import pandas as pd
 from pathlib import Path
+import logging, coloredlogs
+from dotenv import load_dotenv
+from sqlalchemy import create_engine
+
+
 
 # ================================================ LOGGER ================================================
 
@@ -160,39 +160,40 @@ def load_raw_data_from_postgres_to_s3(postgres_connection):
 
 
         for raw_table in raw_tables:
-            
-            cursor.execute(f'SELECT * FROM {schema_name}.{raw_table[0]} ')
-            sql_results = cursor.fetchall()
-            tables_imported_to_s3 += 1
-            df = pd.DataFrame(data=sql_results, columns=[desc[0] for desc in cursor.description])
-            root_logger.debug(f'Raw table name: {raw_table[0]}')
+            raw_table_name = raw_table[0]
+            cursor.execute(f'SELECT * FROM {schema_name}.{raw_table_name} ')
+            sql_results             =   cursor.fetchall()
+            tables_imported_to_s3   +=  1
+            df                      =   pd.DataFrame(data=sql_results, columns=[desc[0] for desc in cursor.description])
+            root_logger.debug(f'Raw table name: {raw_table_name}')
             root_logger.debug(df.head(3))
             root_logger.info(f'')
-
-            root_logger.info(f"Importing '{raw_table[0]}' table to S3 bucket as JSON file...  ") 
+            root_logger.info(f"Importing '{raw_table_name}' table to S3 bucket as a CSV file...  ") 
 
             # Set up constants for S3 file to be imported
-            s3 = boto3.client('s3', aws_access_key_id=ACCESS_KEY, aws_secret_access_key=SECRET_ACCESS_KEY, region_name=REGION_NAME)
-            raw_table_csv_file = f'{raw_table[0]}.csv'
-            raw_sub_folder = 'raw_folder/'
-            S3_KEY = raw_sub_folder + raw_table_csv_file
+            S3                                           =       boto3.client('s3', aws_access_key_id=ACCESS_KEY, aws_secret_access_key=SECRET_ACCESS_KEY, region_name=REGION_NAME)
+            raw_table_csv_file                           =       f'{raw_table_name}.csv'
+            raw_sub_folder                               =       'raw_folder/'
+            S3_KEY                                       =       raw_sub_folder + raw_table_csv_file
+            CSV_BUFFER                                   =       io.StringIO()
+            
+            
+            # Write the dataframe to CSV file via buffer 
+            df.to_csv(CSV_BUFFER, index=False)
+            RAW_TABLE_ROWS_AS_STRING_VALUES              =       CSV_BUFFER.getvalue()
+            
 
-            with io.StringIO() as csv_parser:
-                raw_df_to_csv = df.to_csv(raw_table_csv_file, index=False)
-                RAW_DATA_CSV_BODY = csv_parser.getvalue()
 
-
-                # Load Postgres table to S3
-                s3.put_object(Bucket=S3_BUCKET,
-                            Key=S3_KEY,
-                            Body=RAW_DATA_CSV_BODY
-                            )
-                root_logger.info(f"Successfully loaded '{S3_KEY}' file to the '{S3_BUCKET}' S3 bucket... ")
-                root_logger.info("")
-                root_logger.info(f"     --- {tables_imported_to_s3}/{len(raw_tables)} raw tables in S3... ")
-                root_logger.info("")
-                root_logger.info("---------------------------------------------")
-
+            # Load Postgres table to S3
+            S3.put_object(Bucket=S3_BUCKET,
+                        Key=S3_KEY,
+                        Body=RAW_TABLE_ROWS_AS_STRING_VALUES
+                        )
+            root_logger.info(f"Successfully loaded '{S3_KEY}' file to the '{S3_BUCKET}' S3 bucket... ")
+            root_logger.info("")
+            root_logger.info(f"     --- {tables_imported_to_s3}/{len(raw_tables)} raw tables in S3... ")
+            root_logger.info("")
+            root_logger.info("---------------------------------------------")
 
 
         root_logger.info("")
@@ -265,12 +266,13 @@ def perform_import_validation_checks(postgres_connection):
         raw_tables = cursor.fetchall()
 
         for raw_table in raw_tables:
-            count_total_no_of_rows_in_postgres_table   =   f'''   SELECT COUNT(*) FROM {schema_name}.{raw_table[0]} ;
+            raw_table_name = raw_table[0]
+            count_total_no_of_rows_in_postgres_table   =   f'''   SELECT COUNT(*) FROM {schema_name}.{raw_table_name} ;
             '''
             count_total_no_of_columns_in_postgres_table  =   f'''            SELECT          COUNT(column_name) 
-                                                                FROM            information_schema.columns 
-                                                                WHERE           table_name      =   '{raw_table[0]}'
-                                                                AND             table_schema    =   '{schema_name}'
+                                                                             FROM            information_schema.columns 
+                                                                             WHERE           table_name      =   '{raw_table_name}'
+                                                                             AND             table_schema    =   '{schema_name}'
             '''
 
 
@@ -284,7 +286,7 @@ def perform_import_validation_checks(postgres_connection):
 
 
             # root_logger.info("")
-            root_logger.info(f'Postgres table name:                         {raw_table[0]} ')
+            root_logger.info(f'Postgres table name:                         {raw_table_name} ')
             root_logger.info(f'Number of rows in Postgres table:            {sql_result_for_row_count} ')
             root_logger.info(f'Number of columns in Postgres table:         {sql_result_for_column_count} ')
             root_logger.info("")
@@ -329,4 +331,4 @@ def perform_import_validation_checks(postgres_connection):
 load_raw_data_from_postgres_to_s3(postgres_connection)
 
 
-perform_import_validation_checks(postgres_connection)
+# perform_import_validation_checks(postgres_connection)
