@@ -172,23 +172,26 @@ def load_raw_data_from_postgres_to_s3(postgres_connection):
             root_logger.info(f"Importing '{raw_table[0]}' table to S3 bucket as JSON file...  ") 
 
             # Set up constants for S3 file to be imported
-            raw_sub_folder = 'raw_folder/'
-            S3_KEY = raw_sub_folder + f'{raw_table[0]}.json'
-            raw_df_to_json = df.to_json(orient="records")
-            RAW_DATA_JSON_BODY = json.dumps(json.loads(raw_df_to_json), indent=4, sort_keys=True)
             s3 = boto3.client('s3', aws_access_key_id=ACCESS_KEY, aws_secret_access_key=SECRET_ACCESS_KEY, region_name=REGION_NAME)
+            raw_table_csv_file = f'{raw_table[0]}.csv'
+            raw_sub_folder = 'raw_folder/'
+            S3_KEY = raw_sub_folder + raw_table_csv_file
+
+            with io.StringIO() as csv_parser:
+                raw_df_to_csv = df.to_csv(raw_table_csv_file, index=False)
+                RAW_DATA_CSV_BODY = csv_parser.getvalue()
 
 
-            # Load Postgres table to S3
-            s3.put_object(Bucket=S3_BUCKET,
-                          Key=S3_KEY,
-                          Body=RAW_DATA_JSON_BODY
-                          )
-            root_logger.info(f"Successfully loaded {S3_KEY} file to the '{S3_BUCKET}' S3 bucket... ")
-            root_logger.info("")
-            root_logger.info(f"     --- {tables_imported_to_s3}/{len(raw_tables)} raw tables in S3... ")
-            root_logger.info("")
-            root_logger.info("---------------------------------------------")
+                # Load Postgres table to S3
+                s3.put_object(Bucket=S3_BUCKET,
+                            Key=S3_KEY,
+                            Body=RAW_DATA_CSV_BODY
+                            )
+                root_logger.info(f"Successfully loaded '{S3_KEY}' file to the '{S3_BUCKET}' S3 bucket... ")
+                root_logger.info("")
+                root_logger.info(f"     --- {tables_imported_to_s3}/{len(raw_tables)} raw tables in S3... ")
+                root_logger.info("")
+                root_logger.info("---------------------------------------------")
 
 
 
@@ -321,7 +324,9 @@ def perform_import_validation_checks(postgres_connection):
 
 
 
-# load_raw_data_from_postgres_to_s3(postgres_connection)
+
+
+load_raw_data_from_postgres_to_s3(postgres_connection)
 
 
 perform_import_validation_checks(postgres_connection)
